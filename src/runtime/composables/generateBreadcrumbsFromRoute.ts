@@ -42,9 +42,9 @@ export function generateBreadcrumbsFromRoute(options: { current?: string; hideCu
     const route = router.currentRoute.value
     return pathBreadcrumbSegments(route.path)
       .reverse()
-      .map(path => <BreadcrumbItemProps> ({
+      .map(path => ({
         to: path,
-      }))
+      }) as BreadcrumbItemProps)
   })
 }
 

@@ -7,7 +7,6 @@ import {
   computed,
   defineSchemaOrgBreadcrumbs,
   generateBreadcrumbsFromRoute,
-  resolveComponent,
   translateSeoUILabel,
   useAppConfig,
 } from '#imports'
@@ -15,7 +14,6 @@ import {
 // TODO: Remove
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import {separator} from "#tailwind-config";
 
 const props = withDefaults(defineProps<BreadcrumbProps>(), {
   ui: () => appConfig.seoUi.breadcrumb,
