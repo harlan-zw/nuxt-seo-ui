@@ -16,6 +16,22 @@ export interface BreadcrumbProps {
    * @default true
    */
   homeIcon?: boolean
+  /**
+   * Should the current breadcrumb item be shown.
+   *
+   * @default false
+   */
+  hideCurrent?: boolean
+  /**
+   * Should the separator be hidden.
+   *
+   * @default false
+   */
+  hideSeparator?: boolean
+  /**
+   * The path of the current breadcrumb item.
+   */
+  current?: string
   showAtRoot?: boolean
   items?: (string | BreadcrumbItemProps)[]
   ui?: {
@@ -39,8 +55,14 @@ export interface BreadcrumbItemProps {
   to: string
   label?: string | false
   ariaLabel?: string
-  separator?: string | false
+  separator?: string
   icon?: string
+  /**
+   * Should the separator be hidden.
+   *
+   * @default false
+   */
+  hideSeparator?: boolean
   ui?: {
     default?: string
     current?: string

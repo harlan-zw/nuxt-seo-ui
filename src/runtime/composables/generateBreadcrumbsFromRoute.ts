@@ -4,7 +4,7 @@ import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import type { RouteMeta } from 'vue-router'
 import type { BreadcrumbItemProps } from '../../types'
-import { translateSeoUILabel, useRouter } from '#imports'
+import { translateSeoUILabel, useRoute, useRouter } from '#imports'
 
 function titleCase(s: string) {
   return s
@@ -36,7 +36,7 @@ export function pathBreadcrumbSegments(path: string) {
   return stepNode(startNode)
 }
 
-export function generateBreadcrumbsFromRoute(): ComputedRef<BreadcrumbItemProps[]> {
+export function generateBreadcrumbsFromRoute(options: { current?: string; hideCurrent?: boolean } = {}): ComputedRef<BreadcrumbItemProps[]> {
   const router = useRouter()
   return computed(() => {
     const route = router.currentRoute.value
@@ -45,40 +45,46 @@ export function generateBreadcrumbsFromRoute(): ComputedRef<BreadcrumbItemProps[
       .map(path => <BreadcrumbItemProps> ({
         to: path,
       }))
-      .map(normaliseBreadcrumbItem)
   })
 }
 
-export function normaliseBreadcrumbItem(item: BreadcrumbItemProps) {
+export function normaliseBreadcrumbItem(options: { current?: string; hideCurrent?: boolean } = {}) {
   const router = useRouter()
   const routes = router.getRoutes()
-  const route = routes.find(route => withoutTrailingSlash(route.path) === withoutTrailingSlash(item.to))
-  const routeMeta = (routes.find(route => route.path === item.to)?.meta || {}) as RouteMeta & { title?: string; breadcrumbLabel: string }
-  // allow opt-out of label normalise with `false` value
-  if (typeof item.label === 'undefined') {
-    // try use i18n
-    if (route) {
-      // fetch from i18n
-      item.label = translateSeoUILabel(`pages.${route.name}.breadcrumbLabel`)
-    }
-    // use route meta breadcrumbLabel
-    if (routeMeta.breadcrumbLabel && !item.label)
-      item.label = routeMeta.breadcrumbLabel
+  const current = options.current || useRoute().path
+  return (item: BreadcrumbItemProps) => {
+    const route = routes.find(route => withoutTrailingSlash(route.path) === withoutTrailingSlash(item.to))
+    const routeMeta = (routes.find(route => route.path === item.to)?.meta || {}) as RouteMeta & { title?: string; breadcrumbLabel: string }
+    // allow opt-out of label normalise with `false` value
+    if (typeof item.label === 'undefined') {
+      // try use i18n
+      if (route) {
+        // fetch from i18n
+        item.label = translateSeoUILabel(`pages.${route?.name}.breadcrumbLabel`)
+      }
+      // use route meta breadcrumbLabel
+      if (routeMeta.breadcrumbLabel && !item.label)
+        item.label = routeMeta.breadcrumbLabel
 
-    // use route meta title
-    if (routeMeta.title && !item.label)
-      item.label = routeMeta.title
+      // use route meta title
+      if (routeMeta.title && !item.label)
+        item.label = routeMeta.title
 
-    // fallback
-    if (!item.label) {
-      if (item.to === '/')
-        item.label = translateSeoUILabel('seoUi.breadcrumbs.root')
-      else
-        // pop last url segment and title case it
-        item.label = titleCase(item.to.split('/').pop() || '')
+      // fallback
+      if (!item.label) {
+        if (item.to === '/')
+          item.label = translateSeoUILabel('seoUi.breadcrumbs.root')
+        else
+          // pop last url segment and title case it
+          item.label = titleCase(item.to.split('/').pop() || '')
+      }
     }
+    // mark the current based on the options
+    item.current = item.to === current
+    if (options.hideCurrent && item.current)
+      return false
+    return item
   }
-  return item
 }
 
 export function defineBreadcrumbItems(items: BreadcrumbItemProps[]) {

@@ -94,6 +94,7 @@ export default defineNuxtModule<ModuleOptions>({
     // we need to extend the tailwind config to parse our breadcrumbs component
     nuxt.hook('tailwindcss:config', (tailwindConfig) => {
       tailwindConfig.content = tailwindConfig.content || []
+      // @ts-expect-error untyped
       tailwindConfig.content.push(appConfigFile)
     })
   },

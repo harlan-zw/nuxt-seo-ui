@@ -29,6 +29,7 @@ jobs:
           CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - run: pnpm i
+      - run: pnpm build
 
       - name: Publish to NPM
         # post release as beta

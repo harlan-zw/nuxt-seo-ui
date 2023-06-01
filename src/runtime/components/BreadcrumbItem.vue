@@ -11,9 +11,10 @@ import {
 // @ts-expect-error
 import appConfig from '#build/app.config'
 
-const props = withDefaults(defineProps<BreadcrumbItemProps & { last: boolean; first: boolean }>(), {
+const props = withDefaults(defineProps<BreadcrumbItemProps & { last: boolean; first: boolean; current: boolean }>(), {
   ui: () => appConfig.seoUi.breadcrumbItem,
   separator: 'heroicons-solid:chevron-right',
+  hideSeparator: false,
 })
 
 const runtimeAppConfig = useAppConfig()
@@ -59,11 +60,11 @@ const spanAttrs = computed(() => {
 
 <template>
   <SiteLink
-    v-if="!last"
+    v-if="!current"
     v-bind="linkAttrs"
   >
     <template v-if="icon">
-      <Icon :name="icon" :class="[...ui.icon, ...(label ? ui.iconWithLabel : [])]" aria-hidden="true" />
+      <Icon :name="icon" :class="[ui.icon, (label ? ui.iconWithLabel : [])]" aria-hidden="true" />
     </template>
     <template v-if="label">
       {{ label }}
@@ -74,15 +75,15 @@ const spanAttrs = computed(() => {
     v-bind="spanAttrs"
   >
     <template v-if="icon">
-      <Icon :name="icon" :class="[...ui.icon, ...(label ? ui.iconWithLabel : [])]" aria-hidden="true" />
+      <Icon :name="icon" :class="[ui.icon, (label ? ui.iconWithLabel : [])]" aria-hidden="true" />
     </template>
     <template v-if="label">
       {{ label }}
     </template>
   </span>
-  <template v-if="separator && !last">
-  <slot name="separator">
-    <Icon :name="separator" class="text-gray-400" aria-hidden="true" :class="ui.separator" />
-  </slot>
+  <template v-if="!hideSeparator && separator && !last">
+    <slot name="separator">
+      <Icon :name="separator" class="text-gray-400" aria-hidden="true" :class="ui.separator" />
+    </slot>
   </template>
 </template>
