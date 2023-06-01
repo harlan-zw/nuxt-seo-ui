@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "nuxt-seo-ui-playground",
+  "type": "module",
+  "main": "./nuxt.config.ts",
+  "scripts": {
+    "prepare": "nuxi prepare"
+  },
+  "dependencies": {
+    "@nuxthq/ui": "^2.2.0",
+    "nuxt-icon": "^0.4.1",
+    "@nuxtjs/i18n": "^8.0.0-beta.12"
+  }
+}
