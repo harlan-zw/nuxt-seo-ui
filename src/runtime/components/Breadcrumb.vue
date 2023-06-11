@@ -60,7 +60,7 @@ defineSchemaOrgBreadcrumbs(
     // unique IDs so we support appending to the same array
     id: `#${label.value.toLowerCase()}`,
     itemListElement: items.value.map(item => ({
-      name: item.label,
+      name: item.label || item.ariaLabel,
       item: item.to,
     })),
   })),
