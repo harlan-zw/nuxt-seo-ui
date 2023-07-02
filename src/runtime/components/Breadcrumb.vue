@@ -28,7 +28,6 @@ const ui = computed<Partial<typeof appConfig.seoUi.breadcrumbs>>(() => defu({}, 
 
 const label = computed(() => props.ariaLabel ?? translateSeoUILabel('seoUi.breadcrumbs.breadcrumbs', 'Breadcrumbs'))
 
-console.log(props)
 const breadcrumbNormaliser = computed(() => {
   return normaliseBreadcrumbItem({ current: props.current, hideCurrent: props.hideCurrent })
 })
