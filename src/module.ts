@@ -95,7 +95,14 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hook('tailwindcss:config', (tailwindConfig) => {
       tailwindConfig.content = tailwindConfig.content || []
       // @ts-expect-error untyped
-      tailwindConfig.content.push(appConfigFile)
+      if (tailwindConfig.content.files) {
+        // @ts-expect-error untyped
+        tailwindConfig.content.files.push(appConfigFile)
+      }
+      else {
+        // @ts-expect-error untyped
+        tailwindConfig.content.push(appConfigFile)
+      }
     })
   },
 })
