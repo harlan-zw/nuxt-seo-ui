@@ -4,10 +4,10 @@ import {
   addImportsDir,
   createResolver,
   defineNuxtModule,
-  installModule,
 } from '@nuxt/kit'
+import { installNuxtSiteConfig } from 'nuxt-site-config-kit'
 
-export * from './types'
+export * from './runtime/types'
 
 export interface ModuleOptions {
   /**
@@ -50,7 +50,7 @@ export default defineNuxtModule<ModuleOptions>({
     const { resolve, resolvePath } = createResolver(import.meta.url)
 
     // for trailing slashes / absolute urls
-    await installModule(await resolvePath('nuxt-site-config'))
+    await installNuxtSiteConfig()
 
     await addComponentsDir({
       path: resolve('runtime', 'components'),

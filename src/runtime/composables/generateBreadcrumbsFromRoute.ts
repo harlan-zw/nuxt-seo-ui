@@ -3,7 +3,7 @@ import { hasTrailingSlash, parseURL, stringifyParsedURL, withTrailingSlash, with
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import type { RouteMeta } from 'vue-router'
-import type { BreadcrumbItemProps } from '../../types'
+import type { BreadcrumbItemProps } from '../types'
 import { translateSeoUILabel, useRoute, useRouter } from '#imports'
 
 function titleCase(s: string) {

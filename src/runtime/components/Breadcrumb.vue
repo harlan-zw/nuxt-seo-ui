@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defu } from 'defu'
-import type { BreadcrumbItemProps, BreadcrumbProps } from '../../types'
+import type { BreadcrumbItemProps, BreadcrumbProps } from '../types'
 import { normaliseBreadcrumbItem } from '../composables'
 import BreadcrumbItem from './BreadcrumbItem.vue'
 import {

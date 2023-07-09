@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defu } from 'defu'
-import type { BreadcrumbItemProps } from '../../types'
+import type { BreadcrumbItemProps } from '../types'
 import {
   computed,
   resolveComponent,
