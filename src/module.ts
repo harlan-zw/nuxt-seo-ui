@@ -1,7 +1,6 @@
 import {
   addComponentsDir,
   addImports,
-  addImportsDir,
   createResolver,
   defineNuxtModule,
 } from '@nuxt/kit'
@@ -59,7 +58,18 @@ export default defineNuxtModule<ModuleOptions>({
       watch: false,
     })
 
-    addImportsDir(resolve('./runtime/composables'))
+    addImports({
+      from: resolve('./runtime/composables/defineBreadcrumbItems'),
+      name: 'defineBreadcrumbItems',
+    })
+    addImports({
+      from: resolve('./runtime/composables/generateBreadcrumbsFromRoute'),
+      name: 'generateBreadcrumbsFromRoute',
+    })
+    addImports({
+      from: resolve('./runtime/composables/normaliseBreadcrumbItem'),
+      name: 'normaliseBreadcrumbItem',
+    })
 
     const hasModuleSchemaOrg = nuxt.options.modules.some((m: any) => typeof m === 'string' && m === 'nuxt-schema-org')
     // add defineSchemaOrgBreadcrumbs import
