@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { defu } from 'defu'
 import type { BreadcrumbItemProps, BreadcrumbProps } from '../types'
-import { normaliseBreadcrumbItem } from '../composables'
 import BreadcrumbItem from './BreadcrumbItem.vue'
 import {
   computed,
   defineSchemaOrgBreadcrumbs,
   generateBreadcrumbsFromRoute,
+  normaliseBreadcrumbItem,
   translateSeoUILabel,
   useAppConfig,
 } from '#imports'

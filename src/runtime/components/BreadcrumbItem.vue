@@ -8,7 +8,7 @@ import {
 } from '#imports'
 
 // TODO: Remove
-// @ts-expect-error
+// @ts-expect-error untyped
 import appConfig from '#build/app.config'
 
 const props = withDefaults(defineProps<BreadcrumbItemProps & { last: boolean; first: boolean }>(), {

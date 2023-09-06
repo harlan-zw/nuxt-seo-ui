@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+
 // @ts-expect-error runtime type
 import { defineBreadcrumb, useSchemaOrg } from '#imports'
 

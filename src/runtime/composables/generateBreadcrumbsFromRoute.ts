@@ -77,7 +77,7 @@ export function normaliseBreadcrumbItem(options: { current?: string; hideCurrent
           item.label = translateSeoUILabel('seoUi.breadcrumbs.root', 'Home')
         else
           // pop last url segment and title case it
-          item.label = titleCase(item.to.split('/').pop() || '')
+          item.label = titleCase(withoutTrailingSlash(item.to).split('/').pop() || '')
       }
     }
     // mark the current based on the options
