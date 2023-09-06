@@ -11,7 +11,7 @@ import {
 // @ts-expect-error
 import appConfig from '#build/app.config'
 
-const props = withDefaults(defineProps<BreadcrumbItemProps & { last: boolean; first: boolean; current: boolean }>(), {
+const props = withDefaults(defineProps<BreadcrumbItemProps & { last: boolean; first: boolean }>(), {
   ui: () => appConfig.seoUi.breadcrumbItem,
   separator: 'heroicons-solid:chevron-right',
   hideSeparator: false,

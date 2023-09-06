@@ -35,14 +35,14 @@ export interface BreadcrumbProps {
   showAtRoot?: boolean
   items?: (string | BreadcrumbItemProps)[]
   ui?: {
-    separator?: string
-    icon?: string
-    list?: string
-    nav?: string
+    separator?: string | string[]
+    icon?: string | string[]
+    list?: string | string[]
+    nav?: string | string[]
     item?: {
-      default?: string
-      current?: string
-      disabled?: string
+      default?: string | string[]
+      current?: string | string[]
+      disabled?: string | string[]
     }
   }
 }

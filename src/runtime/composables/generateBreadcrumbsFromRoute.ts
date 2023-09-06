@@ -36,7 +36,7 @@ export function pathBreadcrumbSegments(path: string) {
   return stepNode(startNode)
 }
 
-export function generateBreadcrumbsFromRoute(options: { current?: string; hideCurrent?: boolean } = {}): ComputedRef<BreadcrumbItemProps[]> {
+export function generateBreadcrumbsFromRoute(): ComputedRef<BreadcrumbItemProps[]> {
   const router = useRouter()
   return computed(() => {
     const route = router.currentRoute.value
@@ -59,8 +59,9 @@ export function normaliseBreadcrumbItem(options: { current?: string; hideCurrent
     if (typeof item.label === 'undefined') {
       // try use i18n
       if (route) {
+        const routeName = String(route.name || route.path)
         // fetch from i18n
-        item.label = translateSeoUILabel(`pages.${route?.name}.breadcrumbLabel`)
+        item.label = translateSeoUILabel(`pages.${routeName}.breadcrumbLabel`, routeName)
       }
       // use route meta breadcrumbLabel
       if (routeMeta.breadcrumbLabel && !item.label)
@@ -73,7 +74,7 @@ export function normaliseBreadcrumbItem(options: { current?: string; hideCurrent
       // fallback
       if (!item.label) {
         if (item.to === '/')
-          item.label = translateSeoUILabel('seoUi.breadcrumbs.root')
+          item.label = translateSeoUILabel('seoUi.breadcrumbs.root', 'Home')
         else
           // pop last url segment and title case it
           item.label = titleCase(item.to.split('/').pop() || '')
