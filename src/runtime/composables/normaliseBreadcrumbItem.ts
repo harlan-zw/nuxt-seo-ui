@@ -14,7 +14,7 @@ export function normaliseBreadcrumbItem(options: { current?: string; hideCurrent
   const current = options.current || useRoute().path
   return (item: BreadcrumbItemProps) => {
     const route = routes.find(route => withoutTrailingSlash(route.path) === withoutTrailingSlash(item.to))
-    const routeMeta = (routes.find(route => route.path === item.to)?.meta || {}) as RouteMeta & { title?: string; breadcrumbLabel: string }
+    const routeMeta = (route?.meta || {}) as RouteMeta & { title?: string; breadcrumbLabel: string }
     // allow opt-out of label normalise with `false` value
     if (typeof item.label === 'undefined') {
       // try use i18n
