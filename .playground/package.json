@@ -1,7 +1,7 @@
 {
-  "private": true,
   "name": "nuxt-seo-ui-playground",
   "type": "module",
+  "private": true,
   "main": "./nuxt.config.ts",
   "scripts": {
     "prepare": "nuxi prepare"

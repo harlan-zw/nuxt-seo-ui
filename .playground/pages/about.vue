@@ -5,6 +5,7 @@ definePageMeta({
   image: 'https://example.com/image.jpg',
 })
 </script>
+
 <template>
   <div>
     About page
