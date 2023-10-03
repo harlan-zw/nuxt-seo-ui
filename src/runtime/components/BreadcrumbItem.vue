@@ -4,7 +4,8 @@ import type { BreadcrumbItemProps } from '../types'
 import {
   computed,
   resolveComponent,
-  useAppConfig, useRoute,
+  useAppConfig,
+  useRoute,
 } from '#imports'
 
 // TODO: Remove
@@ -25,7 +26,7 @@ const SiteLink = resolveComponent('SiteLink')
 const Icon = resolveComponent('Icon')
 
 const linkAttrs = computed(() => {
-  const attrs: Record<string, any> = {
+  const attrs: BreadcrumbItemProps & Record<string, any> = {
     to: props.to,
   }
   if (props.disabled) {
