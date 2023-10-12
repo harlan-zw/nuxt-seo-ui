@@ -1,0 +1,12 @@
+{
+  "seoUi": {
+    "breadcrumbs": {
+      "label": "Percorso",
+      "items": {
+        "index": {
+          "label": "Casa"
+        }
+      }
+    }
+  }
+}
