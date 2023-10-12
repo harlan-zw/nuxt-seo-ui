@@ -1,9 +1,4 @@
-import {
-  addComponentsDir,
-  addImports,
-  createResolver,
-  defineNuxtModule,
-} from '@nuxt/kit'
+import { addComponentsDir, addImports, createResolver, defineNuxtModule, hasNuxtModule, installModule } from '@nuxt/kit'
 import { installNuxtSiteConfig } from 'nuxt-site-config-kit'
 
 export * from './runtime/types'
@@ -50,6 +45,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // for trailing slashes / absolute urls
     await installNuxtSiteConfig()
+    await installModule('nuxt-icon')
 
     await addComponentsDir({
       path: resolve('runtime', 'components'),
