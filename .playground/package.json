@@ -7,8 +7,7 @@
     "prepare": "nuxi prepare"
   },
   "dependencies": {
-    "@nuxthq/ui": "^2.5.0",
-    "@nuxtjs/i18n": "^8.0.0-beta.12",
-    "nuxt-icon": "^0.4.2"
+    "@nuxt/ui": "^2.9.0",
+    "@nuxtjs/i18n": "^8.0.0-beta.12"
   }
 }
