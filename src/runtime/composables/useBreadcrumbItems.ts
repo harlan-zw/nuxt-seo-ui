@@ -40,14 +40,21 @@ export function useBreadcrumbItems(options: { path?: string | Ref<string> } & Om
         let [name] = routeName.split(i18nOptions ? i18nOptions.routesNameSeparator : '___')
         if (name === 'unknown')
           name = item.to.split('/').pop() || '' // fallback to last path segment
+        // merge with the route meta
+        if (routeMeta.breadcrumb) {
+          item = {
+            ...item,
+            ...routeMeta.breadcrumb,
+          }
+        }
         // allow opt-out of label normalise with `false` value
         // @ts-expect-error untyped
         item.label = item.label || routeMeta.breadcrumbTitle || routeMeta.title
         if (typeof item.label === 'undefined') {
           // try use i18n
           // fetch from i18n
-          item.label = item.label || i18n.t(`seoUi.breadcrumbs.items.${name}.label`, titleCase(name), { missingWarn: false })
-          item.ariaLabel = item.ariaLabel || i18n.t(`seoUi.breadcrumbs.items.${name}.ariaLabel`, item.label, { missingWarn: false })
+          item.label = item.label || i18n.t(`seoUi.breadcrumb.items.${name}.label`, name === 'index' ? 'Home' : titleCase(name), { missingWarn: false })
+          item.ariaLabel = item.ariaLabel || i18n.t(`seoUi.breadcrumb.items.${name}.ariaLabel`, item.label, { missingWarn: false })
         }
         item.ariaLabel = item.ariaLabel || typeof item.label === 'string' ? String(item.label) : undefined
         // mark the current based on the options
