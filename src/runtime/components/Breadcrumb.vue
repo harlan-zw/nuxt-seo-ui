@@ -22,7 +22,7 @@ const MAX_VISIBLE_ITEMS = 4
 
 const i18n = useI18n()
 
-const label = computed(() => props.ariaLabel ?? i18n.t('seoUi.breadcrumbs.label', 'Breadcrumbs'))
+const label = computed(() => props.ariaLabel ?? i18n.t('seoUi.breadcrumb.label', 'Breadcrumbs'))
 
 const resolvedItems = computed<BreadcrumbItemProps[]>(() => {
   // let items: BreadcrumbItemProps[]
