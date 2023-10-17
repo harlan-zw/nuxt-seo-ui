@@ -1,11 +1,12 @@
-import type { ParsedURL } from 'ufo'
-import { hasTrailingSlash, parseURL, stringifyParsedURL, withTrailingSlash } from 'ufo'
-import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
-import type { BreadcrumbItemProps } from '../types'
-import { useRouter } from '#imports'
+import { type ParsedURL, hasTrailingSlash, parseURL, stringifyParsedURL, withTrailingSlash } from 'ufo'
 
-function pathBreadcrumbSegments(path: string) {
+export function titleCase(s: string) {
+  return s
+    .replaceAll('-', ' ')
+    .replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase())
+}
+
+export function pathBreadcrumbSegments(path: string) {
   const startNode = parseURL(path)
   const appendsTrailingSlash = hasTrailingSlash(startNode.pathname)
 
@@ -27,16 +28,4 @@ function pathBreadcrumbSegments(path: string) {
     return nodes
   }
   return stepNode(startNode)
-}
-
-export function generateBreadcrumbsFromRoute(): ComputedRef<BreadcrumbItemProps[]> {
-  const router = useRouter()
-  return computed(() => {
-    const route = router.currentRoute.value
-    return pathBreadcrumbSegments(route.path)
-      .reverse()
-      .map(path => ({
-        to: path,
-      }) as BreadcrumbItemProps)
-  })
 }

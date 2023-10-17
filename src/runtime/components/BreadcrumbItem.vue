@@ -1,26 +1,16 @@
 <script lang="ts" setup>
-import { defu } from 'defu'
 import type { BreadcrumbItemProps } from '../types'
 import {
   computed,
   resolveComponent,
-  useAppConfig,
-  useRoute,
 } from '#imports'
 
-// TODO: Remove
-// @ts-expect-error untyped
-import appConfig from '#build/app.config'
-
 const props = withDefaults(defineProps<BreadcrumbItemProps & { last: boolean; first: boolean }>(), {
-  ui: () => appConfig.seoUi.breadcrumbItem,
+  ui: () => ({}),
   separator: 'heroicons-solid:chevron-right',
-  hideSeparator: false,
 })
 
-const runtimeAppConfig = useAppConfig()
-
-const ui = computed<Partial<typeof appConfig.seoUi.breadcrumbs>>(() => defu({}, props.ui, runtimeAppConfig.seoUi.breadcrumbItem))
+const ui = computed(() => props.ui)
 
 const SiteLink = resolveComponent('SiteLink')
 const Icon = resolveComponent('Icon')
@@ -28,6 +18,7 @@ const Icon = resolveComponent('Icon')
 const linkAttrs = computed(() => {
   const attrs: BreadcrumbItemProps & Record<string, any> = {
     to: props.to,
+    label: props.label,
   }
   if (props.disabled) {
     return {
@@ -36,27 +27,36 @@ const linkAttrs = computed(() => {
       'aria-disabled': true,
     }
   }
-  if (props.ariaLabel)
-    attrs.ariaLabel = props.ariaLabel
+  else {
+    attrs.tabindex = 0
+  }
+  attrs['aria-label'] = props.ariaLabel || typeof props.label === 'string' ? String(props.label) : undefined
   if (props.icon && !props.label && props.ariaLabel)
     attrs.title = props.ariaLabel
 
-  const route = useRoute()
   attrs.class = [
     props.disabled ? ui.value.disabled : [],
-    props.to === route.path ? ui.value.current : ui.value.default,
+    props.current ? ui.value.current : ui.value.default,
+    props.last ? ui.value.last : [],
   ]
   return attrs
 })
 
 const spanAttrs = computed(() => {
   return {
-    class: [
+    'class': [
       props.disabled ? ui.value.disabled : [],
       ui.value.current,
+      props.last ? ui.value.last : [],
     ],
+    'label': props.label,
+    'role': 'link',
+    'aria-disabled': true,
+    'aria-current': props.current ? (props.ariaCurrent || 'page') : undefined,
   }
 })
+
+const separatorIcon = computed(() => props.separator === true ? 'heroicons-solid:chevron-right' : props.separator)
 </script>
 
 <template>
@@ -64,27 +64,27 @@ const spanAttrs = computed(() => {
     v-if="!current"
     v-bind="linkAttrs"
   >
-    <template v-if="icon">
-      <Icon :name="icon" :class="[ui.icon, (label ? ui.iconWithLabel : [])]" aria-hidden="true" />
-    </template>
-    <template v-if="label">
-      {{ label }}
-    </template>
+    <slot v-if="icon" name="icon">
+      <Icon :name="icon" :class="[ui.icon, (label ? ui.iconWithLabel : [])]" aria-hidden="true" role="img" />
+    </slot>
+    <slot v-if="label" name="label">
+      <span :class="last ? ui.last : []">
+        {{ label }}
+      </span>
+    </slot>
   </SiteLink>
   <span
     v-else
     v-bind="spanAttrs"
   >
-    <template v-if="icon">
-      <Icon :name="icon" :class="[ui.icon, (label ? ui.iconWithLabel : [])]" aria-hidden="true" />
-    </template>
-    <template v-if="label">
-      {{ label }}
-    </template>
-  </span>
-  <template v-if="!hideSeparator && separator && !last">
-    <slot name="separator">
-      <Icon :name="separator" class="text-gray-400" aria-hidden="true" :class="ui.separator" />
+    <slot v-if="icon" name="icon">
+      <Icon :name="icon" :class="[ui.icon, (label ? ui.iconWithLabel : [])]" aria-hidden="true" role="img" />
     </slot>
-  </template>
+    <slot v-if="label" name="label">
+      {{ label }}
+    </slot>
+  </span>
+  <slot v-if="separatorIcon && !last" name="separator">
+    <Icon :name="separatorIcon" aria-hidden="true" :class="ui.separator" role="img" />
+  </slot>
 </template>

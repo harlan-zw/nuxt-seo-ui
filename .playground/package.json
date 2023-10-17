@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@nuxt/ui": "^2.9.0",
-    "@nuxtjs/i18n": "^8.0.0-beta.12"
+    "@nuxtjs/i18n": "^8.0.0-beta.12",
+    "nuxt-component-meta": "^0.5.4"
   }
 }

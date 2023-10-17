@@ -1,21 +1,17 @@
+type Arrayable<T> = T | T[]
+
 export interface BreadcrumbProps {
+  /**
+   * The items to show in the breadcrumb.
+   */
+  items: (string | BreadcrumbItemProps)[]
   /**
    * The Aria Label for the breadcrumbs.
    * You shouldn't need to change this.
    *
-   * @default Breadcrumbs
+   * @default 'Breadcrumbs'
    */
   ariaLabel?: string
-  /**
-   * The type of current location the breadcrumb item represents, if `isCurrent` is true.
-   * @default 'page'
-   */
-  ariaCurrent?: 'page' | 'step' | 'location' | 'date' | 'time' | boolean | 'true' | 'false'
-  /**
-   * Use an icon be used for the home breadcrumb item.
-   * @default true
-   */
-  homeIcon?: boolean
   /**
    * Should the current breadcrumb item be shown.
    *
@@ -23,49 +19,64 @@ export interface BreadcrumbProps {
    */
   hideCurrent?: boolean
   /**
-   * Should the separator be hidden.
+   * The separator icon to use. Alternatively, a truthy value will use the default separator
+   * and a falsy value will hide the separator.
    *
    * @default false
    */
-  hideSeparator?: boolean
+  separator?: boolean
   /**
-   * The path of the current breadcrumb item.
+   * Should the breadcrumb be shown on multiple lines.
+   *
+   * @default false
    */
-  current?: string
-  showAtRoot?: boolean
-  items?: (string | BreadcrumbItemProps)[]
+  multiline?: boolean
+  /**
+   * Should the root breadcrumb be shown.
+   */
+  showRoot?: boolean
   ui?: {
-    separator?: string | string[]
-    icon?: string | string[]
-    list?: string | string[]
-    nav?: string | string[]
-    item?: {
-      default?: string | string[]
-      current?: string | string[]
-      disabled?: string | string[]
-    }
+    separator?: Arrayable<string>
+    icon?: Arrayable<string>
+    ol?: Arrayable<string>
+    nav?: Arrayable<string>
+    li?: Arrayable<string>
+    liLast?: Arrayable<string>
+    liMultiLine?: Arrayable<string>
+    item?: BreadcrumbItemProps['ui']
   }
 }
 
 export interface BreadcrumbItemProps {
   /** Whether the breadcrumb item represents the aria-current. */
   current?: boolean
+  /**
+   * The type of current location the breadcrumb item represents, if `isCurrent` is true.
+   * @default 'page'
+   */
+  ariaCurrent?: 'page' | 'step' | 'location' | 'date' | 'time' | boolean | 'true' | 'false'
   /** Whether the breadcrumb item is disabled. */
   disabled?: boolean
   to: string
   label?: string | false
   ariaLabel?: string
-  separator?: string
+  separator?: boolean | string
   icon?: string
-  /**
-   * Should the separator be hidden.
-   *
-   * @default false
-   */
-  hideSeparator?: boolean
+  class?: (string | string[] | undefined)[] | string
   ui?: {
-    default?: string
-    current?: string
-    disabled?: string
+    separator?: Arrayable<string>
+    icon?: Arrayable<string>
+    iconWithLabel?: Arrayable<string>
+    default?: Arrayable<string>
+    current?: Arrayable<string>
+    disabled?: Arrayable<string>
+    last?: Arrayable<string>
+  }
+  /**
+   * @internal
+   */
+  _props?: {
+    first: boolean
+    last: boolean
   }
 }

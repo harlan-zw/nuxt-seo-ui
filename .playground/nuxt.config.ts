@@ -4,11 +4,26 @@ import NuxtSeoUi from '../src/module'
 export default defineNuxtConfig({
   modules: [
     NuxtSeoUi,
-    '@nuxthq/ui',
+    '@nuxt/ui',
     '@nuxtjs/i18n',
-    'nuxt-icon',
+    'nuxt-component-meta',
   ],
-
+  componentMeta: {
+    globalsOnly: true,
+    debug: 2,
+    checkerOptions: {
+      forceUseTs: true,
+    },
+    metaFields: {
+      props: true,
+      slots: true,
+      events: true,
+      exposed: true,
+    },
+  },
+  seoUi: {
+    global: true,
+  },
   i18n: {
     lazy: true,
     langDir: 'locales/',
@@ -25,6 +40,6 @@ export default defineNuxtConfig({
       },
     ],
     defaultLocale: 'en',
-    strategy: 'no_prefix',
+    strategy: 'prefix',
   },
 })

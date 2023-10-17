@@ -1,10 +1,10 @@
 {
   "seoUi": {
     "breadcrumbs": {
-      "label": "Breadcrumbs",
+      "label": "Semmelbrösel",
       "items": {
         "index": {
-          "label": "Home"
+          "label": "Zuhause"
         }
       }
     }

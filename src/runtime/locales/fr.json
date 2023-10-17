@@ -1,8 +1,12 @@
 {
   "seoUi": {
     "breadcrumbs": {
-      "breadcrumbs": "Chemin de navigation",
-      "homeLabel": "Accueil"
+      "label": "Chemin de navigation",
+      "items": {
+        "index": {
+          "label": "Accueil"
+        }
+      }
     }
   }
 }

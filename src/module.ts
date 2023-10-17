@@ -1,5 +1,7 @@
 import { addComponentsDir, addImports, createResolver, defineNuxtModule, hasNuxtModule, installModule } from '@nuxt/kit'
 import { installNuxtSiteConfig } from 'nuxt-site-config-kit'
+import type { NuxtI18nOptions } from '@nuxtjs/i18n/dist/module'
+import { getNuxtModuleOptions } from './utils'
 
 export * from './runtime/types'
 
@@ -31,21 +33,38 @@ export default defineNuxtModule<ModuleOptions>({
     },
     configKey: 'seoUi',
   },
-  defaults() {
-    return {
-      enabled: true,
-      prefix: 'S',
-    }
+  defaults: {
+    enabled: true,
+    prefix: 'S',
   },
   async setup(config, nuxt) {
     if (!config.enabled)
       return
 
-    const { resolve, resolvePath } = createResolver(import.meta.url)
+    const { resolve } = createResolver(import.meta.url)
 
     // for trailing slashes / absolute urls
     await installNuxtSiteConfig()
     await installModule('nuxt-icon')
+
+    let nuxtI18nConfig: NuxtI18nOptions = {}
+    if (hasNuxtModule('@nuxtjs/i18n')) {
+      nuxtI18nConfig = (await getNuxtModuleOptions('@nuxtjs/i18n') || {}) as NuxtI18nOptions
+    }
+    else {
+      addImports({
+        from: resolve(`./runtime/composables/mocks/useI18n`),
+        name: 'useI18n',
+      })
+    }
+
+    nuxt.options.runtimeConfig.public['nuxt-seo-ui'] = {
+      i18n: {
+        strategy: nuxtI18nConfig.strategy || 'prefix',
+        defaultLocale: nuxtI18nConfig.defaultLocale || 'en',
+        routesNameSeparator: nuxtI18nConfig.routesNameSeparator || '__',
+      },
+    }
 
     await addComponentsDir({
       path: resolve('runtime', 'components'),
@@ -54,34 +73,18 @@ export default defineNuxtModule<ModuleOptions>({
       watch: false,
     })
 
-    addImports({
-      from: resolve('./runtime/composables/defineBreadcrumbItems'),
-      name: 'defineBreadcrumbItems',
-    })
-    addImports({
-      from: resolve('./runtime/composables/generateBreadcrumbsFromRoute'),
-      name: 'generateBreadcrumbsFromRoute',
-    })
-    addImports({
-      from: resolve('./runtime/composables/normaliseBreadcrumbItem'),
-      name: 'normaliseBreadcrumbItem',
+    ;['useBreadcrumbItems', 'useBreadcrumbsUi', 'defineBreadcrumbItems'].forEach((name) => {
+      addImports({
+        from: resolve(`./runtime/composables/${name}`),
+        name,
+      })
     })
 
-    const hasModuleSchemaOrg = nuxt.options.modules.some((m: any) => typeof m === 'string' && m === 'nuxt-schema-org')
-    // add defineSchemaOrgBreadcrumbs import
     addImports({
-      from: resolve(`./runtime/composables/schemaOrg/${hasModuleSchemaOrg ? 'defineSchemaOrgBreadcrumbs' : 'mock'}`),
+      from: resolve(`./runtime/composables/${hasNuxtModule('nuxt-schema-org') ? '' : 'mocks/'}defineSchemaOrgBreadcrumbs`),
       name: 'defineSchemaOrgBreadcrumbs',
     })
 
-    const hasModuleI18n = nuxt.options.modules.some((m: any) => typeof m === 'string' && m === '@nuxtjs/i18n')
-    // add defineSchemaOrgBreadcrumbs import
-    addImports({
-      from: resolve(`./runtime/composables/i18n/${hasModuleI18n ? 'translateSeoUILabel' : 'mock'}`),
-      name: 'translateSeoUILabel',
-    })
-
-    // if it exists
     nuxt.hook('i18n:registerModule', (register) => {
       register({
         langDir: resolve('./runtime/locales'),
@@ -89,27 +92,18 @@ export default defineNuxtModule<ModuleOptions>({
           { code: 'en', file: 'en.json' },
           { code: 'fr', file: 'fr.json' },
           { code: 'it', file: 'it.json' },
+          { code: 'de', file: 'de.json' },
+          { code: 'es', file: 'es.json' },
         ],
       })
     })
 
-    const appConfigFile = await resolvePath(resolve('./runtime/app.config'))
-    nuxt.hook('app:resolve', (app) => {
-      app.configs.push(appConfigFile)
-    })
-
-    // we need to extend the tailwind config to parse our breadcrumbs component
-    nuxt.hook('tailwindcss:config', (tailwindConfig) => {
-      tailwindConfig.content = tailwindConfig.content || []
-      // @ts-expect-error untyped
-      if (tailwindConfig.content.files) {
-        // @ts-expect-error untyped
-        tailwindConfig.content.files.push(appConfigFile)
-      }
-      else {
-        // @ts-expect-error untyped
-        tailwindConfig.content.push(appConfigFile)
-      }
+    nuxt.hooks.hook('tailwindcss:config', (config) => {
+      // add our components for scanning
+      // @ts-expect-error bad types
+      config.content.files.push(resolve('./runtime/components/*.vue'))
+      // @ts-expect-error bad types
+      config.content.files.push(resolve('./runtime/composables/useBreadcrumbsUi.ts'))
     })
   },
 })
