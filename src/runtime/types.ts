@@ -35,6 +35,12 @@ export interface BreadcrumbProps {
    * Should the root breadcrumb be shown.
    */
   showRoot?: boolean
+  /**
+   * Should breadcrumbs automatically try and fit the device width. For mobile this may hide items and cause a layout shift.
+   *
+   * @default true
+   */
+  responsiveDisplay?: boolean
   ui?: {
     separator?: Arrayable<string>
     icon?: Arrayable<string>

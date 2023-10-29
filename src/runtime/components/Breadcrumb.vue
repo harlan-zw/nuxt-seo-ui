@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<BreadcrumbProps>(), {
   separator: true,
   hideCurrent: false,
   multiline: false,
+  responsiveDisplay: true,
 })
 
 const MIN_VISIBLE_ITEMS = 1
@@ -115,8 +116,10 @@ function computeVisibleItems() {
   visibleItems.value = Math.max(MIN_VISIBLE_ITEMS, Math.min(maxVisibleItems, newVisibleItems))
 }
 
-const updateVisibleItems = useDebounceFn(computeVisibleItems, 100)
-useResizeObserver(list, updateVisibleItems)
+if (props.responsiveDisplay) {
+  const updateVisibleItems = useDebounceFn(computeVisibleItems, 100)
+  useResizeObserver(list, updateVisibleItems)
+}
 
 const wrapClass = computed(() => !props.multiline ? 'flex-nowrap' : 'flex-wrap')
 </script>
