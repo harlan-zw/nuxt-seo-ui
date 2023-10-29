@@ -50,7 +50,6 @@ const spanAttrs = computed(() => {
       props.last ? ui.value.last : [],
     ],
     'label': props.label,
-    'role': 'link',
     'aria-disabled': true,
     'aria-current': props.current ? (props.ariaCurrent || 'page') : undefined,
   }
@@ -73,7 +72,7 @@ const separatorIcon = computed(() => props.separator === true ? 'heroicons-solid
       </span>
     </slot>
   </SiteLink>
-  <a
+  <span
     v-else
     v-bind="spanAttrs"
   >
@@ -83,7 +82,7 @@ const separatorIcon = computed(() => props.separator === true ? 'heroicons-solid
     <slot v-if="label" name="label">
       {{ label }}
     </slot>
-  </a>
+  </span>
   <slot v-if="separatorIcon && !last" name="separator">
     <Icon :name="separatorIcon" aria-hidden="true" :class="ui.separator" role="img" />
   </slot>
