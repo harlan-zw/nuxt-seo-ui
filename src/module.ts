@@ -99,11 +99,16 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     nuxt.hooks.hook('tailwindcss:config', (config) => {
-      // add our components for scanning
-      // @ts-expect-error bad types
-      config.content.files.push(resolve('./runtime/components/*.vue'))
-      // @ts-expect-error bad types
-      config.content.files.push(resolve('./runtime/composables/useBreadcrumbsUi.ts'))
+      if (Array.isArray(config.content)) {
+        // add our components for scanning
+        config.content.push(resolve('./runtime/components/*.vue'))
+        config.content.push(resolve('./runtime/composables/useBreadcrumbsUi.ts'))
+      }
+      else if (config.content?.files && Array.isArray(config.content?.files)) {
+        // add our components for scanning
+        config.content.files.push(resolve('./runtime/components/*.vue'))
+        config.content.files.push(resolve('./runtime/composables/useBreadcrumbsUi.ts'))
+      }
     })
   },
 })
