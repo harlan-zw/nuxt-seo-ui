@@ -73,7 +73,7 @@ const separatorIcon = computed(() => props.separator === true ? 'heroicons-solid
       </span>
     </slot>
   </SiteLink>
-  <span
+  <a
     v-else
     v-bind="spanAttrs"
   >
@@ -83,7 +83,7 @@ const separatorIcon = computed(() => props.separator === true ? 'heroicons-solid
     <slot v-if="label" name="label">
       {{ label }}
     </slot>
-  </span>
+  </a>
   <slot v-if="separatorIcon && !last" name="separator">
     <Icon :name="separatorIcon" aria-hidden="true" :class="ui.separator" role="img" />
   </slot>
