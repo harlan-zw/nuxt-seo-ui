@@ -50,7 +50,6 @@ const spanAttrs = computed(() => {
       props.last ? ui.value.last : [],
     ],
     'label': props.label,
-    'role': 'link',
     'aria-disabled': true,
     'aria-current': props.current ? (props.ariaCurrent || 'page') : undefined,
   }
