@@ -35,7 +35,7 @@ export function useBreadcrumbItems(options: { path?: string | Ref<string> } & Om
       }) as BreadcrumbItemProps)
       .map((item) => {
         const route = routes.find(r => withoutTrailingSlash(r.path) === withoutTrailingSlash(item.to))
-        const routeMeta = (route?.meta || {}) as RouteMeta & { title?: string; breadcrumbLabel: string }
+        const routeMeta = (route?.meta || {}) as RouteMeta & { title?: string, breadcrumbLabel: string }
         const routeName = route ? String(route.name || route.path) : (item.to === '/' ? 'index' : 'unknown')
         let [name] = routeName.split(i18nOptions ? i18nOptions.routesNameSeparator : '___')
         if (name === 'unknown')

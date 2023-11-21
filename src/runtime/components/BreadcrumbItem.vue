@@ -5,7 +5,7 @@ import {
   resolveComponent,
 } from '#imports'
 
-const props = withDefaults(defineProps<BreadcrumbItemProps & { last: boolean; first: boolean }>(), {
+const props = withDefaults(defineProps<BreadcrumbItemProps & { last: boolean, first: boolean }>(), {
   ui: () => ({}),
   separator: 'heroicons-solid:chevron-right',
 })
