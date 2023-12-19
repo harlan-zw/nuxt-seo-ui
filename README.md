@@ -1,6 +1,6 @@
 <h1 align='center'>nuxt-seo-ui</h1>
 
-After careful consideration, this package will no longer be developed. The core feature of this module,
+⚠️ After careful consideration, this package will no longer be developed. The core feature of this module,
 `useBreadcrumbItems` will be moved to [Nuxt SEO](https://github.com/harlan-zw/nuxt-seo-kit).
 
 ---
